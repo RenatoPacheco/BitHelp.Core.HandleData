@@ -27,18 +27,21 @@ namespace BitHelp.Core.HandleData
                 { "I", 1 },
                 { "N", 0 }
             };
-            Regex regra = new Regex(@"IV|IX|XL|XC|CD|CM|M|D|C|L|X|V|I|N", RegexOptions.IgnoreCase);
+            Regex regra = new Regex(@"M|CM|D|CD|C|XC|L|XL|X|IX|V|IV|I|N", RegexOptions.IgnoreCase);
             MatchCollection valores = regra.Matches(roman);
 
             if(valores.Count == 0 || roman.Length != string.Join("", valores).Length)
                 throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
 
+            int last = 4000;
             int[] vakores = valores.Cast<Match>().Select(m => referencia[m.Value.ToUpper()]).ToArray();
             foreach (int item in vakores)
             {
                 total += item;
-                if (total >= 4000)
+                if (total >= 4000 || last < item || (last/5+item) == last)
                     throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
+
+                last = item;
             }
 
             return total;
