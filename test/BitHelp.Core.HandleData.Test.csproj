@@ -17,8 +17,4 @@
     <ProjectReference Include="..\src\BitHelp.Core.HandleData.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="NumberHandleTest\" />
-  </ItemGroup>
-
 </Project>

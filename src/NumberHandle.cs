@@ -9,28 +9,38 @@ namespace BitHelp.Core.HandleData
         public static int RomanToInt(string roman)
         {
             int total = 0;
-            IDictionary<string, int> referencia = new Dictionary<string, int>();
-            referencia.Add("M", 1000);
-            referencia.Add("CM", 900);
-            referencia.Add("D", 500);
-            referencia.Add("CD", 400);
-            referencia.Add("C", 100);
-            referencia.Add("XC", 90);
-            referencia.Add("L", 50);
-            referencia.Add("XL", 40);
-            referencia.Add("X", 10);
-            referencia.Add("IX", 9);
-            referencia.Add("V", 5);
-            referencia.Add("IV", 4);
-            referencia.Add("I", 1);
-            Regex regra = new Regex(@"M|CM|D|CD|C|XC|L|XL|X|IX|V|IV|I", RegexOptions.IgnoreCase);
-            MatchCollection valores = regra.Matches(roman);
-            if (valores.Count > 0)
+            
+            IDictionary<string, int> referencia = new Dictionary<string, int>
             {
-                int[] vakores = valores.Cast<Match>().Select(m => referencia[m.Value.ToUpper()]).ToArray();
-                foreach (int item in vakores)
-                    total += item;
+                { "M", 1000 },
+                { "CM", 900 },
+                { "D", 500 },
+                { "CD", 400 },
+                { "C", 100 },
+                { "XC", 90 },
+                { "L", 50 },
+                { "XL", 40 },
+                { "X", 10 },
+                { "IX", 9 },
+                { "V", 5 },
+                { "IV", 4 },
+                { "I", 1 },
+                { "N", 0 }
+            };
+            Regex regra = new Regex(@"IV|IX|XL|XC|CD|CM|M|D|C|L|X|V|I|N", RegexOptions.IgnoreCase);
+            MatchCollection valores = regra.Matches(roman);
+
+            if(valores.Count == 0 || roman.Length != string.Join("", valores).Length)
+                throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
+
+            int[] vakores = valores.Cast<Match>().Select(m => referencia[m.Value.ToUpper()]).ToArray();
+            foreach (int item in vakores)
+            {
+                total += item;
+                if (total >= 4000)
+                    throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
             }
+
             return total;
         }
 
