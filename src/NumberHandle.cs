@@ -9,8 +9,8 @@ namespace BitHelp.Core.HandleData
         public static int RomanToInt(string roman)
         {
             int total = 0;
-            
-            IDictionary<string, int> referencia = new Dictionary<string, int>
+
+            IDictionary<string, int> reference = new Dictionary<string, int>
             {
                 { "M", 1000 },
                 { "CM", 900 },
@@ -27,18 +27,19 @@ namespace BitHelp.Core.HandleData
                 { "I", 1 },
                 { "N", 0 }
             };
-            Regex regra = new Regex(@"M|CM|D|CD|C|XC|L|XL|X|IX|V|IV|I|N", RegexOptions.IgnoreCase);
-            MatchCollection valores = regra.Matches(roman);
+            Regex regex = new Regex(@"M|CM|D|CD|C|XC|L|XL|X|IX|V|IV|I|N", RegexOptions.IgnoreCase);
+            IEnumerable<string> values = regex.Matches(roman)
+                .Cast<Match>().Select(m => m.Value).ToArray();
 
-            if(valores.Count == 0 || roman.Length != string.Join("", valores).Length)
+            if (values.Count() == 0 || roman.Length != string.Join("", values).Length)
                 throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
 
             int last = 4000;
-            int[] vakores = valores.Cast<Match>().Select(m => referencia[m.Value.ToUpper()]).ToArray();
-            foreach (int item in vakores)
+            int[] indexes = values.Select(m => reference[m.ToUpper()]).ToArray();
+            foreach (int item in indexes)
             {
                 total += item;
-                if (total >= 4000 || last < item || (last/5+item) == last)
+                if (total >= 4000 || last < item || (last / 5 + item) == last)
                     throw new System.ArgumentException($"{roman} is invalid", nameof(roman));
 
                 last = item;

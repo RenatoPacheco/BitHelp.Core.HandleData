@@ -37,7 +37,7 @@ namespace BitHelp.Core.HandleData
         public static string RemoveSpecialCharacters(string value)
         {
             value = value?.Trim();
-            if(!object.Equals(value, null))
+            if (!object.Equals(value, null))
             {
                 value = Regex.Replace(value, @"[áàäâã]", "a");
                 value = Regex.Replace(value, @"[ÁÀÄÂÃ]", "A");
@@ -66,7 +66,7 @@ namespace BitHelp.Core.HandleData
             }
 
             value = RemoveSpecialCharacters(value);
-            if(!string.IsNullOrWhiteSpace(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 value = Regex.Replace(value, @"[^0-9a-zA-Z\-_ ]", " ");
                 value = Regex.Replace(value, @"[ ]+", delemiter);
