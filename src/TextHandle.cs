@@ -14,6 +14,9 @@ namespace BitHelp.Core.HandleData
 
         public static string ProperName(string value)
         {
+            if (value is null)
+                return null;
+
             StringBuilder result = new StringBuilder();
             string[] list;
 

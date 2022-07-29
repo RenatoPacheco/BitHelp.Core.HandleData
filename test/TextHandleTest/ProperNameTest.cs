@@ -4,25 +4,16 @@ namespace BitHelp.Core.HandleData.Test.TextHandleTest
 {
     public class ProperNameTest
     {
-        [Fact]
-        public void Using_in_names_with_all_letters_in_upercase()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("        ", "")]
+        [InlineData("RENATO BEVILACQUA PACHECO", "Renato Bevilacqua Pacheco")]
+        [InlineData("renato bevilacqua pacheco", "Renato Bevilacqua Pacheco")]
+        [InlineData("Jony DE éder", "Jony de Éder")]
+        public void Proper_name_test(string input, string expected)
         {
-            string name = "RENATO BEVILACQUA PACHECO";
-            Assert.Equal("Renato Bevilacqua Pacheco", TextHandle.ProperName(name));            
-        }
-
-        [Fact]
-        public void Using_in_names_with_all_letters_in_lowercase()
-        {
-            string name = "renato bevilacqua pacheco";
-            Assert.Equal("Renato Bevilacqua Pacheco", TextHandle.ProperName(name));
-        }
-
-        [Fact]
-        public void Using_in_names_with_special_characters_and_all_letters_in_lowercase()
-        {
-            string name = "andré magalhães gonçalves";
-            Assert.Equal("André Magalhães Gonçalves", TextHandle.ProperName(name));
+            string result = TextHandle.ProperName(input);
+            Assert.Equal(expected, result);
         }
     }
 }
