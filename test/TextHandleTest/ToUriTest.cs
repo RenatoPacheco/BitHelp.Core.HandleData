@@ -1,79 +1,38 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace BitHelp.Core.HandleData.Test.TextHandleTest
 {
    public  class ToUriTest
     {
-        [Fact]
-        public void Remove_lower_case()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("        ", "")]
+        [InlineData("1, 2, 3, expreção, história, física, pêssego", "1-2-3-exprecao-historia-fisica-pessego")]
+        [InlineData("1, 2, 3, EXPREÇÃO, HISTÓRIA, FÍSICA, PÊSSEGO", "1-2-3-EXPRECAO-HISTORIA-FISICA-PESSEGO")]
+        public void To_uri_test(string input, string expected)
         {
-            string value = "1, 2, 3, expreção, história, física, pêssego";
-            string newValue = "1-2-3-exprecao-historia-fisica-pessego";
-
-            Assert.Equal(newValue, TextHandle.ToUri(value));
+            Assert.Equal(expected, TextHandle.ToUri(input));
         }
 
-        [Fact]
-        public void Remove_upper_case()
+        [Theory]
+        [InlineData(null, "_", null)]
+        [InlineData("        ", "_", "")]
+        [InlineData("1, 2, 3, expreção, história, física, pêssego", "_", "1_2_3_exprecao_historia_fisica_pessego")]
+        [InlineData("1, 2, 3, EXPREÇÃO, HISTÓRIA, FÍSICA, PÊSSEGO", "_", "1_2_3_EXPRECAO_HISTORIA_FISICA_PESSEGO")]
+        public void To_uri__set_delemiter_test(string input, string delemiter, string expected)
         {
-            string value = "1, 2, 3, EXPREÇÃO, HISTÓRIA, FÍSICA, PÊSSEGO";
-            string newValue = "1-2-3-EXPRECAO-HISTORIA-FISICA-PESSEGO";
-
-            Assert.Equal(newValue, TextHandle.ToUri(value));
+            Assert.Equal(expected, TextHandle.ToUri(input, delemiter));
         }
 
-        [Fact]
-        public void Ignore_null()
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("        ", null)]
+        [InlineData("1, 2, 3, expreção, história, física, pêssego", null)]
+        [InlineData("1, 2, 3, EXPREÇÃO, HISTÓRIA, FÍSICA, PÊSSEGO", null)]
+        public void To_uri__set_delemiter_test_exception(string input, string delemiter)
         {
-            string value = null;
-            string newValue = null;
-
-            Assert.Equal(newValue, TextHandle.ToUri(value));
-        }
-
-        [Fact]
-        public void Clean_if_no_contains_a_z_or_number()
-        {
-            string value = "    ";
-            string newValue = string.Empty;
-
-            Assert.Equal(newValue, TextHandle.ToUri(value));
-        }
-
-        [Fact]
-        public void Remove_lower_case_add_delemiter()
-        {
-            string value = "1, 2, 3, expreção, história, física, pêssego";
-            string newValue = "1_2_3_exprecao_historia_fisica_pessego";
-
-            Assert.Equal(newValue, TextHandle.ToUri(value, "_"));
-        }
-
-        [Fact]
-        public void Remove_upper_case_add_delemiter()
-        {
-            string value = "1, 2, 3, EXPREÇÃO, HISTÓRIA, FÍSICA, PÊSSEGO";
-            string newValue = "1_2_3_EXPRECAO_HISTORIA_FISICA_PESSEGO";
-
-            Assert.Equal(newValue, TextHandle.ToUri(value, "_"));
-        }
-
-        [Fact]
-        public void Ignore_null_add_delemiter()
-        {
-            string value = null;
-            string newValue = null;
-
-            Assert.Equal(newValue, TextHandle.ToUri(value, "_"));
-        }
-
-        [Fact]
-        public void Clean_if_no_contains_a_z_or_number_add_delemiter()
-        {
-            string value = "    ";
-            string newValue = string.Empty;
-
-            Assert.Equal(newValue, TextHandle.ToUri(value, "_"));
+            Assert.Throws<ArgumentNullException>(() => TextHandle.ToUri(input, delemiter));
         }
     }
 }
