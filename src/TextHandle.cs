@@ -1,5 +1,7 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BitHelp.Core.HandleData
 {
@@ -74,6 +76,25 @@ namespace BitHelp.Core.HandleData
                 value = Regex.Replace(value, @"[^0-9a-zA-Z\-_ ]", " ");
                 value = Regex.Replace(value, @"[ ]+", delemiter);
             }
+            return value;
+        }
+
+        public static string RemoveAccents(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                StringBuilder result = new StringBuilder();
+                var arrayText = value.Normalize(NormalizationForm.FormD).ToCharArray();
+
+                foreach (char letter in arrayText)
+                {
+                    if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
+                        result.Append(letter);
+                }
+                
+                return result.ToString();
+            }
+
             return value;
         }
     }
