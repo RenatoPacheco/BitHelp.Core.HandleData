@@ -27,11 +27,9 @@ dotnet add package BitHelp.Core.HandleData
 
 ## Latest releases
 
-#### Release 0.2.0
+## Release 0.3.0 (2023-01-19)
 
-**Features:**
-
-- Downgrade the version for netstandard compatibility
+- feat: Add RemoveAccents in TextHandle
 
 To read about others releases access [RELEASES.md](./RELEASES.md)
 

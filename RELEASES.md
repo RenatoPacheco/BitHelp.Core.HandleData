@@ -1,5 +1,9 @@
 # BitHelp.Core.Validation
 
+## Release 0.3.0 (2023-01-19)
+
+- feat: Add RemoveAccents in TextHandle
+
 ## Release 0.2.0
 
 **Features:**
